@@ -1,20 +1,15 @@
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import javax.lang.model.util.ElementScanner6;
-
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -39,6 +34,8 @@ public class driver  extends Application{
         //Create Labels
         Label left=new Label("Percentage Weight");
         Label right=new Label("Grades");
+        left.setTextFill(Color.WHITE);
+        right.setTextFill(Color.WHITE);
         
 
         //Create text area to input grades
@@ -50,20 +47,29 @@ public class driver  extends Application{
 
         //Create different input buttons
         Button gradeListButton=new Button("List of Grades");
+            gradeListButton.setStyle("-fx-background-color: #ffef99;");  
         Button pointsOver=new Button("Points earned / Total");
+            pointsOver.setStyle("-fx-background-color: #ffef99;");
         Button individual=new Button("Individual Grades");
+            individual.setStyle("-fx-background-color: #ffef99;");
       
         //Create button to add a new row for inputs
         Button newRow=new Button("Create New Row");
+            newRow.setStyle("-fx-background-color: #ffef99;");
 
         //Create button to calculate final grades
         Button finalCalc=new Button("Calculate Grade");
+            finalCalc.setStyle("-fx-background-color: #ffef99;");
 
+        //Create go Back Button
+        Button goBack=new Button("Go Back");
+            goBack.setTextFill(Color.WHITE);
+            goBack.setStyle("-fx-background-color: #4169e1;");
         //Create exit button
         Button exit=new Button("EXIT");
             //Set text color and background color
             exit.setTextFill(Color.WHITE);
-            exit.setStyle("-fx-background-color: #ff0000; ");
+            exit.setStyle("-fx-background-color: #ff0000;");
             //When Button clicked exit the program
             exit.setOnMouseClicked((new EventHandler<MouseEvent>() {
 
@@ -74,36 +80,36 @@ public class driver  extends Application{
             
         }));
 
-        //Box to hold different buttons for input
-            HBox inputSect=new HBox(100);
-            inputSect.getChildren().addAll(pointsOver,individual,gradeListButton);
-            inputSect.setAlignment(Pos.CENTER);
         //Vertical box to hold input buttons
             VBox vertInput=new VBox(100);
-            vertInput.getChildren().addAll(inputSect);
+            vertInput.getChildren().addAll(pointsOver,individual,gradeListButton);
             vertInput.setAlignment(Pos.CENTER);
 
         //Add buttons to box
-            //Box to hold labels
-            HBox horzBox1=new HBox(500);
-            horzBox1.getChildren().addAll(left,right);
-            horzBox1.setAlignment(Pos.CENTER);
+            //Box to hold labels and text fields
+            VBox weightBox=new VBox(50);
+            weightBox.getChildren().addAll(left,weightText);
+            weightBox.setAlignment(Pos.CENTER);
+
+            VBox gradeBox=new VBox(50);
+            gradeBox.getChildren().addAll(right,gradeText);
+            gradeBox.setAlignment(Pos.CENTER);
 
             HBox textBox=new HBox(100);
-            textBox.getChildren().addAll(weightText,gradeText);
+            textBox.getChildren().addAll(weightBox,gradeBox);
             textBox.setAlignment(Pos.CENTER);
 
             HBox horzBox2=new HBox(100);
             horzBox2.getChildren().addAll(newRow,finalCalc);
             horzBox2.setAlignment(Pos.CENTER); //Make the buttons align in the center of the screen
 
-            HBox exitRow=new HBox();
-            exitRow.getChildren().add(exit);
+            HBox exitRow=new HBox(50);
+            exitRow.getChildren().addAll(goBack,exit);
             exitRow.setAlignment(Pos.CENTER);//Make the buttons align in the center of the screen
 
         //Add horizontal boxes to vertical box
             VBox textVBox=new VBox(50);
-            textVBox.getChildren().addAll(horzBox1,textBox);
+            textVBox.getChildren().addAll(textBox);
             textVBox.setAlignment(Pos.CENTER);
 
             VBox vertBox1=new VBox(50);
@@ -177,14 +183,14 @@ public class driver  extends Application{
                     {
                         //Get weight from WeightList
                         txt=weightList.get(i).getText();
-                        txt=txt.substring(19); //Gets rid of percentage weight text at start
+                        txt=txt.substring(txt.indexOf(":")+1); //Gets rid of percentage weight text at start
                         txt=txt.trim(); //precaution to get rid of any empty space
                         double weight=Double.parseDouble(txt);
                         weight /=100; //Gets decimal value for weight
 
                         //Go through grade list
                         txt=gradeList.get(i).getText();
-                        txt=txt.substring(7); //get rid of "Grades: "
+                        txt=txt.substring(txt.indexOf(":")+1); //get rid of "Grades: "
                         txt=txt.trim(); //precaution to get rid of empty spaces
 
                        
@@ -237,12 +243,13 @@ public class driver  extends Application{
                     for(int i=0;i<weightList.size();i++)// Weight list and Grade List are the same length
                     {
                         txt=weightList.get(i).getText();
-                        txt=txt.substring(19); //Gets rid of percentage weight text at start
+                        txt=txt.substring(txt.indexOf(":")+1); //Gets rid of percentage weight text at start
                         txt=txt.trim(); //precaution to get rid of any empty space
+                        System.out.println(txt);
                         double weight=Double.parseDouble(txt);
                         weight /=100; //Gets decimal value for weight
 
-                        txt=gradeList.get(i).getText().substring(7).trim(); //Gets the grade from textfield
+                        txt=gradeList.get(i).getText().substring(txt.indexOf(":")+1).trim(); //Gets the grade from textfield
                         System.out.println(txt);
 
                         grade=Double.parseDouble(txt); //changes string to double
@@ -277,14 +284,14 @@ public class driver  extends Application{
                     for(int i=0;i<weightList.size();i++)// Weight list and Grade List are the same length
                     {
                         txt=weightList.get(i).getText();
-                        txt=txt.substring(15); //Gets rid of percentage weight text at start
+                        txt=txt.substring(txt.indexOf(":")+1); //Gets rid of percentage weight text at start
                         System.out.println(txt);
                         txt=txt.trim(); //precaution to get rid of any empty space
                         double tempEarned=Double.parseDouble(txt);
                         pointsEarned+=tempEarned;
 
                         txt=gradeList.get(i).getText();
-                        txt=txt.substring(14); //Gets rid of percentage weight text at start
+                        txt=txt.substring(txt.indexOf(":")+1); //Gets rid of percentage weight text at start
                         System.out.println(txt);
                         txt=txt.trim(); //precaution to get rid of any empty space
                         double tempTotal=Double.parseDouble(txt);
@@ -311,17 +318,33 @@ public class driver  extends Application{
             }
         }));
 
+
         VBox bigBox=new VBox(50);
         bigBox.getChildren().addAll(textVBox,vertBox1);
         bigBox.setAlignment(Pos.CENTER);
+       
+        
+
+        HBox finalBox=new HBox(50);
+        finalBox.getChildren().addAll(bigBox);
+        finalBox.setAlignment(Pos.CENTER);
    
         //Set Layout
-        StackPane layout=new StackPane();
-        layout.getChildren().addAll(bigBox);
 
-         //Create scene
-        Scene inputScene=new Scene(vertInput,1920,1080); //Scene to get input type
-        Scene scene=new Scene(layout,1920,1080); //Scene to enter grades
+        StackPane layout=new StackPane();
+        layout.getChildren().addAll(finalBox);
+        ScrollPane s=new ScrollPane(layout);
+        s.setStyle("-fx-background: #031632; -fx-border-color: #000000;");
+        s.setFitToWidth(true);
+        s.setFitToHeight(true);
+
+        StackPane inputLayout=new StackPane();
+        inputLayout.getChildren().addAll(vertInput);
+        inputLayout.setStyle("-fx-background: #031632; -fx-border-color: #000000;");
+
+        //Create scene
+        Scene inputScene=new Scene(inputLayout,700,700); //Scene to get input type
+        Scene scene=new Scene(s,700,700); //Scene to enter grades
 
          //Set scene when buttons  are clicked
          gradeListButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
@@ -358,6 +381,27 @@ public class driver  extends Application{
             
         }));
 
+        goBack.setOnMouseClicked((new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+
+                textVBox.getChildren().remove(1, textVBox.getChildren().size());
+                left.setText("Percentage Weight");
+                right.setText("Grades");
+                weightList.get(0).setText("Percentage Weight: ");
+                gradeList.get(0).setText("Grades: ");
+                for(int i=1;i<weightList.size();i++)
+                {
+                    weightList.remove(i);
+                    gradeList.remove(i);
+                }
+                finalGrade=0;
+                primaryStage.setScene(inputScene);
+            }
+            
+        }));
+       
         //Pass in original scene to get input type
             primaryStage.setScene(inputScene);
 
