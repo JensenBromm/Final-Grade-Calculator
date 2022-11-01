@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class driver  extends Application{
@@ -32,6 +33,9 @@ public class driver  extends Application{
         primaryStage.setTitle("Final Grade Calculator");
 
         //Create Labels
+        Label title=new Label("Final Grade Calculator");
+        title.setTextFill(Color.WHITE);
+        title.setFont(new Font("Arial", 30));
         Label left=new Label("Percentage Weight");
         Label right=new Label("Grades");
         left.setTextFill(Color.WHITE);
@@ -81,8 +85,12 @@ public class driver  extends Application{
         }));
 
         //Vertical box to hold input buttons
+            HBox hInput=new HBox(50);
+            hInput.getChildren().addAll(pointsOver,individual,gradeListButton);
+            hInput.setAlignment(Pos.CENTER);
+
             VBox vertInput=new VBox(100);
-            vertInput.getChildren().addAll(pointsOver,individual,gradeListButton);
+            vertInput.getChildren().addAll(title,hInput);
             vertInput.setAlignment(Pos.CENTER);
 
         //Add buttons to box
@@ -249,7 +257,9 @@ public class driver  extends Application{
                         double weight=Double.parseDouble(txt);
                         weight /=100; //Gets decimal value for weight
 
-                        txt=gradeList.get(i).getText().substring(txt.indexOf(":")+1).trim(); //Gets the grade from textfield
+                        txt=gradeList.get(i).getText();
+                        txt=txt.substring(txt.indexOf(":")+1);
+                        txt=txt.trim(); //Gets the grade from textfield
                         System.out.println(txt);
 
                         grade=Double.parseDouble(txt); //changes string to double
