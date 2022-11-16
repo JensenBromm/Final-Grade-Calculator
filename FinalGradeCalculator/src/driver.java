@@ -22,7 +22,11 @@ public class driver  extends Application{
     public ArrayList<TextField> weightList= new ArrayList<TextField>();
     public ArrayList<TextField> gradeList=new ArrayList<TextField>();
     
-    public double finalGrade;
+    public double pointsOverFinalGrade;
+    public double individualFinalGrade;
+    public double listFinalGrade;
+
+    public TextField finalGradField;
 
     public int inputMethod; //1 for list, 2 for individual, 3 for points over total
 
@@ -134,6 +138,7 @@ public class driver  extends Application{
                 TextField gradeNew;
                 if(inputMethod==3)
                 {
+                    
                     weightNew=new TextField("Points Earned: ");
                     weightList.add(weightNew);
         
@@ -143,6 +148,7 @@ public class driver  extends Application{
                 }
                 else if(inputMethod==2)
                 {
+                    
                     weightNew=new TextField("Percentage weight: ");
                     weightList.add(weightNew);
         
@@ -153,6 +159,7 @@ public class driver  extends Application{
                 //Create new row for weighted percentage
                 else 
                 {
+                    
                    weightNew=new TextField("Percentage weight: ");
                     weightList.add(weightNew);
         
@@ -179,11 +186,11 @@ public class driver  extends Application{
             public void handle(MouseEvent event) {
                if(inputMethod==1) //List of grades
                {
-                    finalGrade=0;
+                    listFinalGrade=0;
                     String txt;
-                    double grade;
+                    double grade=0;
                     double sum=0;
-                    double avg;
+                    double avg=0;
                     int count=0;
 
                     //go through list of weights and get the percentage and list
@@ -223,19 +230,19 @@ public class driver  extends Application{
                         //Calculate average
                         avg=sum/count;
 
-                        finalGrade+=avg*weight;
+                        listFinalGrade+=avg*weight;
                     }
 
-                    if(finalGrade>100)
+                    if(listFinalGrade>100)
                     {
-                        finalGrade=100;
+                        listFinalGrade=100;
                     }
-                    else if (finalGrade<0)
+                    else if (listFinalGrade<0)
                     {
-                        finalGrade=0;
+                        listFinalGrade=0;
                     }
                     DecimalFormat numberFormat = new DecimalFormat("#.00");
-                    TextField finalGradField=new TextField("Your Final Grade is: "+numberFormat.format(finalGrade));
+                    finalGradField=new TextField("Your Final Grade is: "+numberFormat.format(listFinalGrade));
                     HBox newBox=new HBox(100);
                     newBox.getChildren().add(finalGradField);
                     newBox.setAlignment(Pos.CENTER);
@@ -244,41 +251,44 @@ public class driver  extends Application{
                }
                else if (inputMethod==2)
                {
-                    finalGrade=0;
+                    individualFinalGrade=0;
                     String txt;
-                    double grade;
+                    double grade=0;
                     //go through list of weights and get the percentage and individual grades
                     for(int i=0;i<weightList.size();i++)// Weight list and Grade List are the same length
                     {
                         txt=weightList.get(i).getText();
                         txt=txt.substring(txt.indexOf(":")+1); //Gets rid of percentage weight text at start
                         txt=txt.trim(); //precaution to get rid of any empty space
-                        System.out.println(txt);
+                        System.out.println("Weight is "+txt);
                         double weight=Double.parseDouble(txt);
                         weight /=100; //Gets decimal value for weight
 
                         txt=gradeList.get(i).getText();
                         txt=txt.substring(txt.indexOf(":")+1);
                         txt=txt.trim(); //Gets the grade from textfield
-                        System.out.println(txt);
+                        System.out.println("Grade is "+txt);
 
                         grade=Double.parseDouble(txt); //changes string to double
-                        System.out.println(grade);
-
-                        finalGrade += grade*weight; //Add weighted grade to final grade
+                        //System.out.println(grade);
+                        System.out.println("Before "+individualFinalGrade);
+                        individualFinalGrade += grade*weight; //Add weighted grade to final grade
+                        System.out.println("After "+individualFinalGrade);
                     }
 
 
-                    if(finalGrade>100)
+                    
+                    if(individualFinalGrade>100)
                     {
-                        finalGrade=100;
+                        individualFinalGrade=100;
                     }
-                    else if (finalGrade<0)
+                    else if (individualFinalGrade<0)
                     {
-                        finalGrade=0;
+                        individualFinalGrade=0;
                     }
+                    
                     DecimalFormat numberFormat = new DecimalFormat("#.00");
-                    TextField finalGradField=new TextField("Your Final Grade is: "+numberFormat.format(finalGrade));
+                    finalGradField=new TextField("Your Final Grade is: "+numberFormat.format(individualFinalGrade));
                     HBox newBox=new HBox(100);
                     newBox.getChildren().add(finalGradField);
                     newBox.setAlignment(Pos.CENTER);
@@ -286,7 +296,7 @@ public class driver  extends Application{
                }
                else if(inputMethod==3) //Points over total
                {    
-                    finalGrade=0;
+                    pointsOverFinalGrade=0;
                     String txt;
                     double totalPoints=0;
                     double pointsEarned=0; 
@@ -295,31 +305,31 @@ public class driver  extends Application{
                     {
                         txt=weightList.get(i).getText();
                         txt=txt.substring(txt.indexOf(":")+1); //Gets rid of percentage weight text at start
-                        System.out.println(txt);
+                        //System.out.println(txt);
                         txt=txt.trim(); //precaution to get rid of any empty space
                         double tempEarned=Double.parseDouble(txt);
                         pointsEarned+=tempEarned;
 
                         txt=gradeList.get(i).getText();
                         txt=txt.substring(txt.indexOf(":")+1); //Gets rid of percentage weight text at start
-                        System.out.println(txt);
+                        //System.out.println(txt);
                         txt=txt.trim(); //precaution to get rid of any empty space
                         double tempTotal=Double.parseDouble(txt);
                         totalPoints+=tempTotal;
                     }
 
-                    finalGrade=(pointsEarned/totalPoints)*100;
+                    pointsOverFinalGrade=(pointsEarned/totalPoints)*100;
 
-                    if(finalGrade>100)
+                    if(pointsOverFinalGrade>100)
                     {
-                        finalGrade=100;
+                        pointsOverFinalGrade=100;
                     }
-                    else if (finalGrade<0)
+                    else if (pointsOverFinalGrade<0)
                     {
-                        finalGrade=0;
+                        pointsOverFinalGrade=0;
                     }
                     DecimalFormat numberFormat = new DecimalFormat("#.00");
-                    TextField finalGradField=new TextField("Your Final Grade is: "+numberFormat.format(finalGrade));
+                    finalGradField=new TextField("Your Final Grade is: "+numberFormat.format(pointsOverFinalGrade));
                     HBox newBox=new HBox(100);
                     newBox.getChildren().add(finalGradField);
                     newBox.setAlignment(Pos.CENTER);
@@ -353,14 +363,15 @@ public class driver  extends Application{
         inputLayout.setStyle("-fx-background: #031632; -fx-border-color: #000000;");
 
         //Create scene
-        Scene inputScene=new Scene(inputLayout,700,700); //Scene to get input type
-        Scene scene=new Scene(s,700,700); //Scene to enter grades
+        Scene inputScene=new Scene(inputLayout,1920,1080); //Scene to get input type
+        Scene scene=new Scene(s,1920,1080); //Scene to enter grades
 
          //Set scene when buttons  are clicked
          gradeListButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent event) {
+                newRow.setText("Create New Row");
                 inputMethod=1;
                 right.setText("Grades (Seperate by spaces)");
                 primaryStage.setScene(scene);
@@ -371,6 +382,7 @@ public class driver  extends Application{
 
             @Override
             public void handle(MouseEvent event) {
+                newRow.setText("Create New Grade");
                 inputMethod=2;
                 gradeText.setText("Grade: ");
                 primaryStage.setScene(scene);
@@ -381,6 +393,7 @@ public class driver  extends Application{
 
             @Override
             public void handle(MouseEvent event) {
+                newRow.setText("Create New Row");
                 left.setText("Points Earned");
                 right.setText("Total Points Avalible");
                 weightText.setText("Points Earned: ");
@@ -395,7 +408,6 @@ public class driver  extends Application{
 
             @Override
             public void handle(MouseEvent event) {
-
                 textVBox.getChildren().remove(1, textVBox.getChildren().size());
                 left.setText("Percentage Weight");
                 right.setText("Grades");
@@ -406,8 +418,11 @@ public class driver  extends Application{
                     weightList.remove(i);
                     gradeList.remove(i);
                 }
-                finalGrade=0;
+                pointsOverFinalGrade=0;
+                individualFinalGrade=0;
+                listFinalGrade=0;
                 primaryStage.setScene(inputScene);
+
             }
             
         }));
